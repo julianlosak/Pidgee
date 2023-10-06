@@ -2,9 +2,13 @@
   "name": "project-3",
   "version": "1.0.0",
   "description": "Real time chat application",
-  "main": "index.js",
+  "main": "server/server.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "node server --ignore client",
+    "develop": "concurrently \"cd server && npm run start\" \"cd client && npm run dev\"",
+    "install": "cd server && npm i && cd ../client && npm i",
+    "seed": "cd server && npm run seed",
+    "build": "cd client && npm run build"
   },
   "keywords": [],
   "author": "",
@@ -16,5 +20,8 @@
     "graphql": "^16.8.1",
     "jsonwebtoken": "^9.0.2",
     "mongoose": "^7.5.4"
+  },
+  "devDependencies": {
+    "concurrently": "^5.3.0"
   }
 }
