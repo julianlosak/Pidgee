@@ -1,4 +1,5 @@
-const typeDefs = `{
+const { ApolloServer, gql } = require("apollo-server-express");
+const typeDefs = gql`
     type User {
         _id: ID
         username: String
@@ -9,7 +10,7 @@ const typeDefs = `{
         chatName: String
         groupChat: Boolean
         recentMessage: Message 
-        users: [User]
+        users: User
         groupAdmin: User
         createdAt: String
         updatedAt: String
@@ -22,6 +23,9 @@ const typeDefs = `{
         updatedAt: String
     }
     type Query {
-        
+        getUserById(id: ID!): User
+        getChatById(id: ID!): Chat
     }
-}`
+`;
+
+module.exports = typeDefs
