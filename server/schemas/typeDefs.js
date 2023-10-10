@@ -34,8 +34,7 @@ const typeDefs = `
         user(username: String!): User
         Chat(chatId: ID!): Chat
         userChats(username: String!): [Chat]
-        groupChats: [Chat]
-        singleChats: [Chat]
+        Chats: [Chat]
         chatMessages(chatId: ID!): [Message]
         recentMessage(chatId: ID!, limit: Int!): [Message]
         userMessages(userId: ID!): [Message]
