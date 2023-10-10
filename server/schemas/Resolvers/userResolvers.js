@@ -3,8 +3,11 @@ const { signToken, AuthenticationError } = require("../../utils/auth");
 
 const userResolvers = {
     Query: {
+        
+     },
 
-    },
+        
+
 Mutation: {
     addUser: async (parent, { username, email, password }) => {
         const user = await User.create({ username, email, password });
