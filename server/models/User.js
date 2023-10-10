@@ -1,5 +1,6 @@
 const { Schema, model} = require("mongoose");
-const bcrypt = require("bcrypt");
+// const bcrypt = require("bcrypt");
+const argon2 = require("argon2");
 
 const userSchema = new Schema({
     username: {
@@ -32,16 +33,30 @@ const userSchema = new Schema({
 
 userSchema.pre("save", async function (next) {
     if (this.isNew || this.isDirectModified("password")) {
-        const saltRounds = 10;
-        this.password = await bcrypt.hash(this.password, saltRounds);
+      try {
+         const hash = await argon2.hash(this.password);
+         this.password = hash;
+         next();
+      } catch (error) {
+         next(error);
+      }
+      //   const saltRounds = 10;
+      //   this.password = await bcrypt.hash(this.password, saltRounds);
+    } else {
+      next();
     }
-
-    next();
 });
 
 userSchema.methods.isCorrectPassword = async function (password) {
-    return bcrypt.compare(password, this.password);
-};
+   try {
+      return await argon2.verify(this.password, password);
+   } catch (error) {
+     return false;
+
+      }
+   }; 
+   //  return bcrypt.compare(password, this.password);
+// };
 
 const User = model("User", userSchema);
 
