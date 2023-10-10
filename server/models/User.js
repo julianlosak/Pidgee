@@ -1,6 +1,6 @@
 const { Schema, model} = require("mongoose");
 // const bcrypt = require("bcrypt");
-
+const argon2 = require("argon2");
 const userSchema = new Schema({
     username: {
         type: String,
