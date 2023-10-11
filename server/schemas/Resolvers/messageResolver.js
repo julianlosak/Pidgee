@@ -2,22 +2,29 @@ const { User, Chat, Message } = require("../../models");
 
 const messageResolvers = {
 Query: {
+    chatMessages: async (parent, { chatId }, context) => {
+       if(context.user) {
+        const userChatMessages = await Message.find({ chat: chatId });
+       
+       return userChatMessages;
+    }
+ },
+
+  recentMessages: async (parent, { chatId }, context) => {
+    if(context.user) {
+        const recentMessage = await Message.find({ chat: chatId })
+        .sort({ createdAt: -1})
+        .limit(1)
+
+        return recentMessage;
+    }
+  },
+
     userMessages: async (parent, args, context) => {
-        const { userId } = args;
-        const { currentUser } = context;
-
-        if( currentUser && currentUser._id.toString() === userId) {
-            try {
-    const userMessages =  await Message.find({ sender: userId});
-    return userMessages;
-   } catch (error) {
-     throw new Error(`Error fetching messages for user ${userId}: ${error.message}`);
-   } 
-} else {
-    throw new Error("You are not the authorized user");
-   }
-}
-
+        if (context.user) {
+            return Message.find({ sender: context.user._id })
+        }
+    },
 },
     searchMessages: async(parent, args) => {
         try {
@@ -26,7 +33,13 @@ Query: {
         }  catch (error) {
             throw new Error(`Error searching messages: ${error.message}`)
         }
-    }
+    },
+
+Mutation: {
+  addMessage: async (parent, { content, chatId }, context) => {
+
+  }
+}
     
   };
 
