@@ -40,7 +40,7 @@ const chatResolvers = {
          }
         }
       },
-
+    },
       Mutation: {
         // Resolver for creating a new chat
         createChat: async (_, { chatInput }) => {
@@ -64,8 +64,8 @@ const chatResolvers = {
             const updatedChat = await chat.save();
             return updatedChat;
           }
+        }
       },
-    },
 
       Chat: {
      // Resolver for resolving members for a chat
@@ -77,7 +77,7 @@ const chatResolvers = {
             throw new Error('Could not fetch members for this chat');
         }
       },
-    }
-}
+    },
+};
 
 module.exports = chatResolvers;
