@@ -1,0 +1,10 @@
+/* header.css */
+.custom-color {
+  background-color: #f0eae4;
+}
+
+/* header.css */
+.btn {
+  width: 100%; /* Make the image fill the container's width */
+  height: auto; /* Maintain the aspect ratio */
+}
