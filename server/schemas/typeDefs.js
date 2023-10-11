@@ -43,13 +43,19 @@ const typeDefs = `
         userParticularChat(chatId: ID!, userId: ID!): Boolean 
         seachUsers(query: String!): [User]
     }
+    input chatNameInput {
+        chatId: ID!
+        chatName: String
+    }
 
     type Mutation {
         addChat(username: String!, email: String!): Chat
         addUser(username: String!, email: String!, password: String!): Auth
         login(email: String!, password: String!): Auth
         addMessage(Content: String!, chatId: ID!): Message
+        deleteMessage(messageId: ID!): Message
         readMessages(chatId: ID!, userId: ID!): Boolean
+        chatName(chatInput: chatNameInput): Chat
     }
 `
 
