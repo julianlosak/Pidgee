@@ -27,15 +27,6 @@ const chatResolvers = {
         },
       },
       Chat: {
-        // Resolver for resolving messages for a chat
-        messages: async (parent) => {
-        try {
-            const messages = await Message.find({ chat: parent._id });
-            return messages;
-          } catch (error) {
-            throw new Error('Could not fetch messages for this chat');
-          }
-        },
         // Resolver for resolving members for a chat
         members: async (parent) => {
         try {
