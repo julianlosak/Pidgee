@@ -39,15 +39,16 @@ const typeDefs = `
         recentMessage(chatId: ID!, limit: Int!): [Message]
         userMessages(userId: ID!): [Message]
         searchMessages(keyword: String!): [Message]
-        userSent(userId: ID!): [Message]
         chatUsers(chatId: ID!): [User]
         userParticularChat(chatId: ID!, userId: ID!): Boolean 
         seachUsers(query: String!): [User]
     }
 
     type Mutation {
+        addChat(username: String!, email: String!): Chat
         addUser(username: String!, email: String!, password: String!): Auth
         login(email: String!, password: String!): Auth
+        addMessage(Content: String!, chatId: ID!): Message
         readMessages(chatId: ID!, userId: ID!): Boolean
     }
 `
