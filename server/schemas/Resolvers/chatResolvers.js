@@ -36,7 +36,17 @@ const chatResolvers = {
             throw new Error('Could not fetch members for this chat');
         }
       },
-    }
-}
+    },
+    User: {
+      startedChats: async (parent) => {
+        try {
+          const chats = await Chat.find({ members: parent._id });
+          return chats;
+        } catch (error) {
+          throw new Error('Could not fetch started chats for this user');
+        }
+      },
+    },
+  };
 
 module.exports = chatResolvers;
