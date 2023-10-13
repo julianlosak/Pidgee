@@ -69,7 +69,7 @@ const chatResolvers = {
 
       Chat: {
         // Resolver for resolving members for a chat
-        members: async (parent) => {
+        users: async (parent) => {
         try {
             const members = await User.find({ _id: { $in: parent.members } });
             return members;
@@ -78,6 +78,8 @@ const chatResolvers = {
         }
       },
     },
-};
+   
+    };
+
 
 module.exports = chatResolvers;

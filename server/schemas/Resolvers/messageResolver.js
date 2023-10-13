@@ -21,19 +21,21 @@ Query: {
   },
 
     userMessages: async (parent, args, context) => {
-        if (context.user) {
+        if(context.user) {
             return Message.find({ sender: context.user._id })
         }
     },
 },
-    searchMessages: async(parent, args) => {
-        try {
-            const messages = await Message.find({ content: {$regex: keyword, $options: "i"} });
-            return messages;
-        }  catch (error) {
-            throw new Error(`Error searching messages: ${error.message}`)
-        }
-    },
+    // searchMessages: async (parent, { keyword }, context) => {
+    //     if(context.user) {
+    //     try {
+    //         const messages = await Message.find({ content: {$regex: keyword, $options: "i"} });
+    //         return messages;
+    //     }  catch (error) {
+    //         throw new Error(`Error searching messages: ${error.message}`)
+    //     }
+    //   }
+    // },
 
 Mutation: {
   addMessage: async (parent, { content, chatId }, context) => {
