@@ -38,6 +38,7 @@ const chatResolvers = {
       },
     },
     User: {
+      // Resolver for seeing all started chats
       startedChats: async (parent) => {
         try {
           const chats = await Chat.find({ members: parent._id });
