@@ -33,7 +33,7 @@ const typeDefs = `
     type Query {
         users: [User]
         user(username: String!): User
-        contacts(userId: ID!): [User]
+        getContacts(userId: ID!): [User]
         getChat(chatId: ID!): Chat
         getAllChats: [Chat]
         chatMessages(chatId: ID!): [Message]
@@ -53,6 +53,7 @@ const typeDefs = `
         createChat(username: String!, email: String!): Chat
         addUser(username: String!, email: String!, password: String!): Auth
         deleteUser(userId: ID!): User
+        addContact(userId: ID!): User
         login(email: String!, password: String!): Auth
         addMessage(Content: String!, chatId: ID!): Message
         deleteMessage(messageId: ID!): Message
