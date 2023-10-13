@@ -1,17 +1,18 @@
 import { useState } from 'react'
 import 'bootstrap/dist/css/bootstrap.min.css';
+import {BrowserRouter, Routes, Route} from 'react-router-dom'
 import './App.css'
-import Header from './components/header/header'
-import Chats from './components/chats/chats'
-import About from './components/about/about'
+import Home from './pages/home'
 function App() {
 
   return (
     <>
     <div>
-      <Header/>
-      <Chats/>
-      <About/>
+      <BrowserRouter>
+      <Routes>
+        <Route index element={<Home />}/>
+        </Routes>
+      </BrowserRouter>
     </div>
     </>
   )
