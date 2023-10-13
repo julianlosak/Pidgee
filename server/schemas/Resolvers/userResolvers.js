@@ -31,6 +31,19 @@ Mutation: {
 
         return { token, user };
     },
+    deleteUser: async(parent, {userId}, context) => {
+        if(context.user) {
+            try {
+                const deletedUser = await User.findByIdAndRemove(userId);
+
+                return deletedUser
+;
+            } catch (error) {
+                throw new Error("Could not delete the user:" + error)
+            }
+          
+        }
+    }
   },
 };
 

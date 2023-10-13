@@ -68,7 +68,7 @@ const chatResolvers = {
       },
 
       Chat: {
-     // Resolver for resolving members for a chat
+        // Resolver for resolving members for a chat
         members: async (parent) => {
         try {
             const members = await User.find({ _id: { $in: parent.members } });

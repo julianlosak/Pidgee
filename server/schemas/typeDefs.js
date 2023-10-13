@@ -51,6 +51,7 @@ const typeDefs = `
     type Mutation {
         addChat(username: String!, email: String!): Chat
         addUser(username: String!, email: String!, password: String!): Auth
+        deleteUser(userId: "user_id_to_delete) {_id username}"
         login(email: String!, password: String!): Auth
         addMessage(Content: String!, chatId: ID!): Message
         deleteMessage(messageId: ID!): Message
