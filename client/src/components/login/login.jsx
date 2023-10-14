@@ -7,6 +7,7 @@ function Login() {
   const [showLoginModal, setShowLoginModal] = useState(false);
   const [showCreateAccountModal, setShowCreateAccountModal] = useState(false);
   const [loginEmail, setLoginEmail] = useState('');
+  const [loginUsername, setLoginUsername] = useState('');
   const [loginPassword, setLoginPassword] = useState('');
   const [createEmail, setCreateEmail] = useState('');
   const [createPassword, setCreatePassword] = useState('');
@@ -84,6 +85,13 @@ function Login() {
               <Form.Control.Feedback type="invalid">
                 Please enter a valid email address.
               </Form.Control.Feedback>
+              <Form.Control
+                type="username"
+                placeholder="Enter a username"
+                value={loginUsername}
+                onChange={(e) => setLoginUsername(e.target.value)}
+
+              />
             </Form.Group>
             <Form.Group controlId="createPassword">
               <Form.Control
