@@ -1,0 +1,43 @@
+.login-btn:hover {
+  width: 50%;
+  background-color: #c9d1d8;
+  color: #60718f;
+  border: #60718f;
+}
+
+.create-account-btn:hover {
+  width: 50%;
+  background-color: #f4d3d1;
+  color: #60718f;
+  border: #60718f;
+}
+
+.login-btn {
+  width: 50%;
+  background-color: #60718f;
+  color: #f4d3d1;
+  border: #60718f;
+  box-shadow: none;
+}
+
+.create-account-btn {
+  width: 50%;
+  background-color: #f5bbb8;
+  color: white;
+  border: #f5bbb8;
+  box-shadow: none;
+}
+
+.create-account-btn:focus {
+  width: 50%;
+  background-color: #60718f;
+  color: white;
+  border: #60718f;
+}
+
+.login-btn:focus {
+  width: 50%;
+  background-color: #60718f;
+  color: white;
+  border: #60718f;
+}
