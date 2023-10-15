@@ -55,15 +55,21 @@ const chatResolvers = {
           return chat;
         },
 
-        chatName: async (_, { chatId, chatName }, context ) => {
+        updateChatName: async (_, { chatId, newName }, context ) => {
             if(context.user) {
-            const chat = await Chat.findOne({ _id: chatId, users: context.user._id});
+              try {
+            const chatToUpdate = await Chat.findOne({ _id: chatId, users: context.user._id});
       
-            chat.chatName = chatName;
+            if(!chatToUpdate) {
+              throw new Error("Chat not found or user does not have access");
+            }
             
-            const updatedChat = await chat.save();
+            const updatedChat = await chatToUpdate.save();
             return updatedChat;
+          } catch (error) {
+          throw new Error("Error updating chat name:" + error.message);
           }
+        }
         }
       },
 
