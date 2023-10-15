@@ -58,7 +58,7 @@ const typeDefs = `
         addMessage(Content: String!, chatId: ID!): Message
         deleteMessage(messageId: ID!): Message
         readMessages(chatId: ID!, userId: ID!): Boolean
-        chatName(chatInput: chatNameInput): Chat
+        updateChatName(chatId: ID!, newName: String!): Chat
     }
 `
 
