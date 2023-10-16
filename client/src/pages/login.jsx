@@ -1,15 +1,4 @@
-// import Header from './../components/header/header'
-// import LoginComponent from './../components/login/login'
 
-// export default function Login(){
-//  return(
-// <>
-// <Header></Header>
-// <LoginComponent></LoginComponent>
-//  </>
-//  )
-
-// }
 import { useState } from 'react';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
@@ -17,6 +6,7 @@ import Modal from 'react-bootstrap/Modal';
 import { LOGIN_USER, ADD_USER } from "../../utils/mutations"
 import { useMutation } from '@apollo/client';
 import Auth from '../../utils/auth';
+import { useNavigate } from 'react-router-dom';
 
 function Login() {
   const [showLoginModal, setShowLoginModal] = useState(false);
@@ -26,15 +16,17 @@ function Login() {
   const [createUsername, setCreateUsername] = useState('');
   const [createEmail, setCreateEmail] = useState('');
   const [createPassword, setCreatePassword] = useState('');
+  
 
-  const [login, {error: loginUserError}] = useMutation(LOGIN_USER);
-  const [createUser, { error: createUserError }] = useMutation(ADD_USER);
+  const [login, { error2, data2 }] = useMutation(LOGIN_USER);
+  const [addUser, { error, data }] = useMutation(ADD_USER);
   const emailRegex = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i;
   const passwordRegex = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,}$/;
 
   const handleShowLoginModal = () => setShowLoginModal(true);
   const handleShowCreateAccountModal = () => setShowCreateAccountModal(true);
 
+  const navigate = useNavigate();
 
   const handleLogin = async () => {
     try {
@@ -42,32 +34,35 @@ function Login() {
             variables: { email: loginEmail, password: loginPassword },
         });
 
+       
+
         Auth.login(data.login.token);
+        console.log("Login was successful")
+        navigate("/");
       } catch (error) {
-        console.error(loginUserError);
+        console.error(error);
       }
-  
-        console.log(data.login);
+    
 
         setShowLoginModal(false);
   };
 
   const handleCreateAccount = async () => {
        try {
-        const { data } = await createUser({
+        const { data } = await addUser({
             variables: { username: createUsername, email: createEmail, password: createPassword },
         });
-        console.log(data.addUser);
-
-        setShowCreateAccountModal(false);
-
+        Auth.login(data.addUser.token);
+        console.log("User account created successfully");
+        navigate('/');
        } catch (error) {
-        console.error(createUserError);
-       }
+      console.error(error);
+      }
+    
+    setShowCreateAccountModal(false);
   };
-
   
-
+   
   return (
     <>
     <br />
@@ -75,7 +70,6 @@ function Login() {
       <Button className="login-btn" variant="primary" onClick={handleShowLoginModal}>
         Login
       </Button>
-
       <Modal show={showLoginModal} onHide={() => setShowLoginModal(false)}>
         <Modal.Header closeButton>
           <Modal.Title>Login</Modal.Title>
@@ -107,7 +101,7 @@ function Login() {
           </Form>
         </Modal.Body>
         <Modal.Footer>
-          <Button variant="primary" className="login-btn" onClick={() => handleLogin}>
+          <Button variant="primary" className="login-btn" onClick={() => handleLogin()}>
             Login
           </Button>
         </Modal.Footer>
@@ -160,7 +154,7 @@ function Login() {
           </Form>
         </Modal.Body>
         <Modal.Footer>
-          <Button variant="primary" className="login-btn" onClick={() => handleCreateAccount}>
+          <Button variant="primary" className="login-btn" onClick={() => handleCreateAccount()}>
             Create
           </Button>
         </Modal.Footer>

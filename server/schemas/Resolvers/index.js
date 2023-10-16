@@ -3,9 +3,18 @@ const messageResolvers = require("./messageResolver");
 const chatResolvers = require("./chatResolvers");
 
 const resolvers = {
-    ...userResolvers,
-    ...messageResolvers,
-    ...chatResolvers
+    Query: {
+    ...userResolvers.Query,
+    ...messageResolvers.Query,
+    ...chatResolvers.Query,
+    
+},
+Mutation: {
+    ...userResolvers.Mutation,
+    ...messageResolvers.Mutation,
+    ...chatResolvers.Mutation,
+    
+},
 };
 
 module.exports = resolvers
