@@ -10,7 +10,7 @@ const typeDefs = `
     type Chat {
         chatName: String
         groupChat: Boolean
-        recentMessage: Message
+        recentMessages(chatId: ID!): [Message]
         users: [User]
         groupAdmin: User
         createdAt: String
@@ -37,7 +37,7 @@ const typeDefs = `
         getChat(chatId: ID!): Chat
         getAllChats: [Chat]
         chatMessages(chatId: ID!): [Message]
-        recentMessage(chatId: ID!, limit: Int!): [Message]
+        recentMessages(chatId: ID!, limit: Int!): [Message]
         userMessages(userId: ID!): [Message]
         searchMessages(keyword: String!): [Message]
         chatUsers(chatId: ID!): [User]
