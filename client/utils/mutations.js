@@ -25,7 +25,7 @@ export const ADD_USER = gql`
 `;
 
 export const DELETE_USER = gql`
-mutation DELETE_USER($userId: ID!) {
+mutation deleteUser($userId: ID!) {
   deleteUser(userId: $userId) {
     _id
   }
@@ -33,7 +33,7 @@ mutation DELETE_USER($userId: ID!) {
 `;
 
 export const ADD_CONTACT = gql`
-mutation ADD_CONTACT($userId: ID!) {
+mutation addContact($userId: ID!) {
   addContact(userId: $userId) {
     _id
   }
@@ -65,7 +65,7 @@ mutation updateChatName($chatId: ID!, $newName: String!) {
 
 
 export const ADD_MESSAGE = gql`
-mutation ADD_MESSAGE($content: String!, $chatId: ID!) {
+mutation addMessage($content: String!, $chatId: ID!) {
   addMessage(Content: $content, chatId: $chatId) {
     sender {
       username
@@ -78,7 +78,7 @@ mutation ADD_MESSAGE($content: String!, $chatId: ID!) {
 `;
 
 export const DELETE_MESSAGE = gql`
-mutation DELETE_MESSAGE($messageId: ID!) {
+mutation deleteMessage($messageId: ID!) {
   deleteMessage(messageId: $messageId) {
     content
     sender {

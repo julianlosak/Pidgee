@@ -2,6 +2,7 @@ import Header from './../components/header/header';
 import React, { useState } from 'react';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
+import { ADD_MESSAGE, DELETE_MESSAGE, useMutation } from "../../utils/mutations"
 
 function SelectedChat() {
   const [messages, setMessages] = useState([
@@ -11,14 +12,29 @@ function SelectedChat() {
   ]);
 
   const [newMessage, setNewMessage] = useState('');
-
-  const sendMessage = () => {
-    if (newMessage.trim() !== '') {
-      setMessages([...messages, { text: newMessage, sender: 'you' }]);
-      setNewMessage('');
+  const [addMessage] = useMutation(ADD_MESSAGE);
+  const [deleteMessage] = useMutation(DELETE_MESSAGE);
+  const currentChatId = ;
+  // const sendMessage = () => {
+  //   if (newMessage.trim() !== '') {
+  //     setMessages([...messages, { text: newMessage, sender: 'you' }]);
+  //     setNewMessage('');
+  //   }
+  // };
+const sendMessage = async () => {
+  if(newMessage.trim() !== '') {
+    try {
+      const { data } = await addMessage({
+        variables: {
+          content: newMessage,
+          chatId: currentChatId
+        }
+      });
+    } catch (error) {
+      console.error("error sending the message:", error);
     }
-  };
-
+  }
+};
   return (
     <div>
       <Header></Header>
