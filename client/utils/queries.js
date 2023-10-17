@@ -47,6 +47,12 @@ query getAllChats {
 }
 `;
 
+export const QUERY_CHATID = gql ` 
+  query chatId {
+  getCurrentChatId
+}
+`;
+
 export const QUERY_CHAT = gql `
 query ChatMessages($chatId: ID!) {
     chatMessages(chatId: $chatId) {

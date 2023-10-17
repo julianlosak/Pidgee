@@ -40,7 +40,24 @@ const chatResolvers = {
          }
         }
       },
+
+      getCurrentChatId: (_, args, context) => {
+      if(context.user) {
+        try {
+        const currentChatId = getUserCurrentChatId(context.user.id) ;
+
+        return currentChatId;
+
+        } catch (error) {
+          console.log(error);
+      throw new Error("Could not fetch chat id")
+    }
+      } else {
+        throw new Error("User could not be authenticated")
+      }
     },
+  },
+    
       Mutation: {
         // Resolver for creating a new chat
         createChat: async (_, { chatInput }) => {
