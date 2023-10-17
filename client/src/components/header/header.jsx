@@ -18,6 +18,21 @@ const Header = () => {
                         <Nav className="me-auto">
                             <Nav.Link href="#favorites">Favorites</Nav.Link>
                             <Nav.Link href="#logout">Logout</Nav.Link>
+
+                          {Auth.loggedIn() ? (
+            <>
+              <span>Start chatting, {Auth.getUser().data.username}!</span>
+              <button className="btn btn-md btn-light m-2" onClick={logout}>
+                Logout
+              </button>
+            </>
+          ) : (
+            <>
+              <Nav.Link className="" href="/login">
+                Login
+              </Nav.Link>
+            </>
+          )}
                         </Nav>
                     </Navbar.Collapse>
                 </Container>
