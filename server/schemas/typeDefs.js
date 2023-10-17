@@ -4,7 +4,6 @@ const typeDefs = `
         username: String
         email: String
         isAdmin: Boolean
-        contacts: [User]
     }
 
     type Chat {
@@ -33,9 +32,9 @@ const typeDefs = `
     type Query {
         users: [User]
         user(username: String!): User
-        getContacts(userId: ID!): [User]
-        getChat(chatId: ID!): Chat
-        getAllChats: [Chat]
+        Chat(chatId: ID!): Chat
+        userChats(username: String!): [Chat]
+        Chats: [Chat]
         chatMessages(chatId: ID!): [Message]
         recentMessages(chatId: ID!, limit: Int!): [Message]
         userMessages(userId: ID!): [Message]
@@ -44,21 +43,13 @@ const typeDefs = `
         userParticularChat(chatId: ID!, userId: ID!): Boolean 
         seachUsers(query: String!): [User]
     }
-    input chatNameInput {
-        chatId: ID!
-        chatName: String
-    }
 
     type Mutation {
-        createChat(username: String!, email: String!): Chat
+        addChat(username: String!, email: String!): Chat
         addUser(username: String!, email: String!, password: String!): Auth
-        deleteUser(userId: ID!): User
-        addContact(userId: ID!): User
         login(email: String!, password: String!): Auth
         addMessage(Content: String!, chatId: ID!): Message
-        deleteMessage(messageId: ID!): Message
         readMessages(chatId: ID!, userId: ID!): Boolean
-        updateChatName(chatId: ID!, newName: String!): Chat
     }
 `
 
