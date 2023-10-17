@@ -26,7 +26,7 @@ const Header = () => {
 
                           {Auth.loggedIn() ? (
             <>
-              <span>Hey there, {Auth.getProfile().data.username}!</span>
+              <span>Start chatting, {Auth.getUser().data.username}!</span>
               <button className="btn btn-md btn-light m-2" onClick={logout}>
                 Logout
               </button>
