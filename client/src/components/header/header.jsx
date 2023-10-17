@@ -42,6 +42,17 @@ const Header = () => {
                     </Navbar.Collapse>
                 </Container>
                 <Container>
+                    <InputGroup className="search-icon d-flex align-items-right">
+                        <FormControl
+                            type="text"
+                            name="searchTerm"
+                            placeholder="Search for chats..."
+                            className="mr-sm-2"
+                        />
+                        <Button type="submit" className=" btn-light">
+                            <img src={searchIcon} alt="" />
+                        </Button>
+                    </InputGroup>
                 </Container>
             </Navbar>
         </div>
