@@ -36,6 +36,7 @@ const typeDefs = `
     }
 
     type Query {
+        users: [User]
         getUsers: [User]
         getUser(username: String!): User
         getChat(chatId: ID!): Chat
