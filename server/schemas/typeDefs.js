@@ -51,7 +51,10 @@ const typeDefs = `
         getContacts: [User]
     }
 
+      
+
     type Mutation {
+        allUsers(pattern: String): [User]
         addChat(username: String!, email: String!): Chat
         addUser(username: String!, email: String!, password: String!): Auth
         addContact(userId: ID, contact: ID!): UserContacts

@@ -3,6 +3,14 @@ const { signToken, AuthenticationError } = require("../../utils/auth");
 
 const userResolvers = {
     Query: {
+        users: async () => {
+            try {
+                const users = await User.find();
+                return users;
+            } catch (error) {
+                throw new Error("Could not fetch users");
+            }
+        },
         getContacts: async ( parent, args, context ) => {
         if (context.user ) {
             try {
@@ -11,7 +19,7 @@ const userResolvers = {
             } catch (error) {
         } throw new Error("Could not fetch contacts");
     }
-   }
+   },
  },
 
         
