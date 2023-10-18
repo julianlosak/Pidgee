@@ -1,5 +1,5 @@
 import Header from './../components/header/header';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import { ADD_MESSAGE, DELETE_MESSAGE } from "../../utils/mutations";
@@ -9,15 +9,19 @@ import { useMutation } from '@apollo/client';
 
 function SelectedChat() {
   const [messages, setMessages] = useState([
-    { text: 'Hello', sender: 'other' },
-    { text: 'Hi there!', sender: 'you' },
-    { text: 'How are you?', sender: 'other' },
+    {user_id: 1, text: 'Hello', sender: 'other' },
+    {user_id: 1, text: 'Hi there!', sender: 'you' },
+    {user_id: 2, text: 'How are you?', sender: 'other' },
+    {user_id: 3, text: 'Hello folks, how are you?', sender: 'other' },
+    {user_id: 4, text: 'Howdy?', sender: 'other' },
   ]);
 
   const [newMessage, setNewMessage] = useState('');
   const [addMessage] = useMutation(ADD_MESSAGE);
   const [deleteMessage] = useMutation(DELETE_MESSAGE);
   const { loading, error, data} = useQuery(CHATID);
+  const [contacts, setContact] = useState([{id: 1, name: "Adib" }, {id: 2, name: "Julian"}, {id: 3, name: "Ian"}, {id: 4, name: "Aaron"}])
+  const [selectedChat, setSelectedChat] = useState(contacts[0])
 
   if (loading) return "Loading...";
   if (error) {
@@ -48,31 +52,55 @@ const sendMessage = async () => {
   }
 };
 
+const selectedChatObj = (obj) => {
+  setSelectedChat(obj)
+}
+
   return (
     <div>
       <Header></Header>
-      <div className="selected-chat">
-        <div className="chat-messages">
-          {messages.map((message, index) => (
-            <div
-              key={index}
-              className={`message ${message.sender === 'you' ? 'sent' : 'received'}`}
-            >
-              {message.text}
+      <div className="selected-chat" style={{ paddingTop: 20 }}>
+        <div style={{ display: "flex", height: "50vh" }}>
+          <div style={{ flex: "2", borderRight: "1px solid" }}>
+            <div className="chat-list-sidebar">
+              <h2>Chat List</h2>
+              <ul className="chat-list">
+                {contacts.map((chat) => (
+                  <li key={chat.id} className="chat-item" style={{ cursor: "pointer", listStyle: "none", borderBottom: "1px solid" }} onClick={() => selectedChatObj(chat)}>
+                    <div className="chat-item-name" style={{ padding: "10px 0px" }}>{chat.name}</div>
+                  </li>
+                ))}
+              </ul>
             </div>
-          ))}
-        </div>
+          </div>
+          <div style={{ flex: "6", alignSelf: "end" }}>
+            <p>Selected: {selectedChat.name}</p>
+          <div className="chat-messages">
+            {messages.map((message, index) => {
+              if (message.user_id == selectedChat.id){
+                  return <div
+                    key={index}
+                    className={`message ${message.sender === 'you' ? 'sent' : 'received'}`}
+                  >
+                    {message.text}
+                  </div>
+              }
+             })
+          }
+          </div>
 
-        <div className="message-input">
-          <Form.Control
-            type="text"
-            placeholder="Type your message..."
-            value={newMessage}
-            onChange={(e) => setNewMessage(e.target.value)}
-          />
-          <Button variant="primary" onClick={sendMessage}>
-            Send
-          </Button>
+            <div className="message-input">
+              <Form.Control
+                type="text"
+                placeholder="Type your message..."
+                value={newMessage}
+                onChange={(e) => setNewMessage(e.target.value)}
+              />
+              <Button variant="primary" onClick={sendMessage}>
+                Send
+              </Button>
+            </div>
+          </div>
         </div>
       </div>
     </div>
