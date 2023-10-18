@@ -15,7 +15,7 @@ const Chats = () =>{
             src={pidgeefeather}
             roundedCircle
           />
-          <span className="ms-1">Pidgee Messaging Service</span>
+          <span className="ms-1" onClick={() => window.location = "/chat"}>Pidgee Messaging Service</span>
         </Button>
         </div>
     )}
