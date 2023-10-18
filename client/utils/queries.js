@@ -15,9 +15,9 @@ export const USER = gql`
   }
 `;
 
-export const USERID = gql `
- query getUserByUsername($username: String!) {
-  user(username: $username) {
+export const QUERY_USERNAME = gql `
+ query getUser($username: String!) {
+  getUser(username: $username) {
     _id
     username
   }

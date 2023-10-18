@@ -11,42 +11,50 @@ import { useLazyQuery } from '@apollo/client';
 import { useMutation } from '@apollo/client';
 import { ADD_CONTACT } from "../../../utils/mutations";
 import { Form, InputGroup, FormControl, Button, ListGroup } from 'react-bootstrap';
-import { USERID } from "../../../utils/queries";
+import { QUERY_USERNAME } from "../../../utils/queries";
 
  
 const Header = () => {
+  const [addContact] = useMutation(ADD_CONTACT);
     const logout = (event) => {
         event.preventDefault();
         Auth.logout();
     }
     
-    const [searchUsername, setSearchUsername] = useState("");
-    const [getUserByUsername, { loading, data }] = useLazyQuery(USERID);
+    const [username, setSearchUsername] = useState('');
+    const [getUser, { loading, data }] = useLazyQuery(QUERY_USERNAME);
     const [contacts, setContacts] = useState([]);
 
     useEffect(() => {
       if (data && data.user) {
         setContacts([data.user])
+        console.log(data); 
       }
     }, [data]);
 
-    const handleSearchUser = () => {
-      if (searchUsername.trim() !== '') {
-        getUserByUsername({ variables:  { username: searchUsername }});
-      }
+    const handleSearchUser = async () => {
+      if (username.trim() !== '') {
+        try {
+
+       const {data} = await getUser({ variables:  { username: username }});
+       console.log(data);
+      } catch (error) {
+        console.error("Error fetching user:", error);
     }
-     
+      } 
+    }
+
     const handleAddContacts = async (userId) => {
-      const [addContact] = useMutation(ADD_CONTACT);
       try {
         const { data } = await addContact({
           variables: { userId },
         });
-        console.log(`Contact added successfully: $data.addContact._id`);
+        console.log(`Contact added successfully: ${data.addContact._id}`);
       } catch (error) {
         console.error("Error adding contacts:", error);
       }
     }
+
     return (
         <div>
             <Navbar expand="lg" className="rounded custom-color">
@@ -93,7 +101,7 @@ const Header = () => {
                     type="text"
                     name="searchTerm"
                     placeholder="Search for user"
-                    value={searchUsername}
+                    value={username}
                     onChange={(e) => setSearchUsername(e.target.value)}
                     />
                     <Button type="button" className="btn-light" onClick={handleSearchUser}>
@@ -103,18 +111,15 @@ const Header = () => {
                 </Container>
             </Navbar>
 
-            <Container className="contacts-list">
-              <h5>Your Contacts</h5>
-              <ListGroup>
-                {contacts.map(contact => (
-              <ListGroup.Item key={contact.id}>
-                {contact.username}
-                <Button className="btn btn-sm btn-light float-end"
-                onClick={() => handleAddContacts(contact.userId)}>Add</Button>
-              </ListGroup.Item>
-                ))}
-              </ListGroup>
-            </Container>
+           { loading && <p>Loading...</p> }
+              {data && data.user && (
+                <div>
+                  <h3>User Info:</h3>
+                  <p>Username: {data.user.username}</p>
+                  <Button className="btn btn-sm btn-light float-end"
+                onClick={() => handleAddContacts(data.user._id)}>Add</Button>
+                </div>
+              )}
         </div>
     )
 }
