@@ -6,6 +6,7 @@ const typeDefs = `
         isAdmin: Boolean
         
     }
+    
     type UserContacts {
         user: User
         contact: User
@@ -35,8 +36,8 @@ const typeDefs = `
     }
 
     type Query {
-        users: [User]
-        user(username: String!): User
+        getUsers: [User]
+        getUser(username: String!): User
         getChat(chatId: ID!): Chat
         userChats(username: String!): [Chat]
         GetAllChats: [Chat]
