@@ -2,7 +2,10 @@ import Header from './../components/header/header';
 import React, { useState } from 'react';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
-import { ADD_MESSAGE, DELETE_MESSAGE } from "../../utils/mutations"
+import { ADD_MESSAGE, DELETE_MESSAGE } from "../../utils/mutations";
+import { CHATID } from "../../utils/queries";
+import { useQuery } from '@apollo/client';
+import { useMutation } from '@apollo/client';
 
 function SelectedChat() {
   const [messages, setMessages] = useState([
@@ -14,13 +17,22 @@ function SelectedChat() {
   const [newMessage, setNewMessage] = useState('');
   const [addMessage] = useMutation(ADD_MESSAGE);
   const [deleteMessage] = useMutation(DELETE_MESSAGE);
-  // const currentChatId = ;
+  const { loading, error, data} = useQuery(CHATID);
+
+  if (loading) return "Loading...";
+  if (error) {
+    console.error("Error loading chat ID", error);
+    return "Error loading chat ID";
+  }
   // const sendMessage = () => {
   //   if (newMessage.trim() !== '') {
   //     setMessages([...messages, { text: newMessage, sender: 'you' }]);
   //     setNewMessage('');
   //   }
   // };
+
+  const currentChatId = data.chatId;
+
 const sendMessage = async () => {
   if(newMessage.trim() !== '') {
     try {
@@ -35,6 +47,7 @@ const sendMessage = async () => {
     }
   }
 };
+
   return (
     <div>
       <Header></Header>

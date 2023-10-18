@@ -1,6 +1,6 @@
 import { gql } from '@apollo/client';
 
-export const QUERY_USER = gql`
+export const USER = gql`
   query user($username: String!) {
     user(username: $username) {
       _id
@@ -15,8 +15,18 @@ export const QUERY_USER = gql`
   }
 `;
 
-export const QUERY_CHATS = gql `
+export const USERID = gql `
+ query getUserByUsername($username: String!) {
+  user(username: $username) {
+    _id
+    username
+  }
+}
+`
+
+export const CHATS = gql `
 query getAllChats {
+  chat {
     chatName
     groupChat
     content
@@ -26,9 +36,11 @@ query getAllChats {
     users {
       username
     }
+}
+
   `;
  
- export const QUERY_ONE_CHAT = gql `
+ export const ONE_CHAT = gql `
  query getChat ($chatId: ID!) {
   getChat(chatId: $chatId) {
     chatName
@@ -47,13 +59,13 @@ query getAllChats {
 }
 `;
 
-export const QUERY_CHATID = gql ` 
+export const CHATID = gql ` 
   query chatId {
   getCurrentChatId
 }
 `;
 
-export const QUERY_CHAT = gql `
+export const CHAT = gql `
 query ChatMessages($chatId: ID!) {
     chatMessages(chatId: $chatId) {
     sender {
@@ -66,7 +78,7 @@ query ChatMessages($chatId: ID!) {
 }
 `;
 
-export const QUERY_RECENT_MESSAGES = gql `
+export const RECENT_MESSAGES = gql `
 query recentMessages($chatId: ID!, $limit: Int!) {
   recentMessage(chatId: $chatId, limit: $limit) {
     sender {
@@ -79,7 +91,7 @@ query recentMessages($chatId: ID!, $limit: Int!) {
 }
 `;
 
-export const QUERY_USER_MESSAGES = gql`
+export const USER_MESSAGES = gql`
 query UserMessages($userId: ID!) {
   userMessages(userId: $userId) {
     sender {
