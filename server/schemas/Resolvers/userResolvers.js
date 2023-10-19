@@ -3,15 +3,8 @@ const { signToken, AuthenticationError } = require("../../utils/auth");
 
 const userResolvers = {
     Query: {
-        users: async () => {
-            try {
-                const users = await User.find();
-                return users;
-            } catch (error) {
-                throw new Error("Could not fetch users");
-            }
-        },    
-    getUser: async (parent, {username}, context) => {
+
+      getUser: async (parent, {username}, context) => {
         if(context.user) {
             try {
                 const singleUser = await User.findOne({username: username});
@@ -62,6 +55,8 @@ Mutation: {
     },
     
  },
-};
+    
+ };
+ 
 
 module.exports = userResolvers;
