@@ -1,15 +1,13 @@
 import React, { useEffect, useState } from "react";
 import Chats from "./chats";
-import { useQuery, gql } from "@apollo/client";
+import { useQuery } from "@apollo/client";
 import { LOAD_USERS } from '../../../utils/queries';
 
-const ChatList = () => {
+const ChatList = ({ selectedUsername }) => {
   const { loading, error, data } = useQuery(LOAD_USERS);
-  const [username, setUsername] = useState([]); // Initialize username as an empty array
-  const [selectedUsername, setSelectedUsername] = useState(null);
+  const [username, setUsername] = useState([]);
 
   useEffect(() => {
-    // Check if data exists and if data.users is an array before setting username
     if (data && data.users) {
       setUsername(data.users);
     }
@@ -18,10 +16,15 @@ const ChatList = () => {
   if (loading) return <p>Loading...</p>;
   if (error) return <p>Error: {error.message}</p>;
 
+  // Filter the list of users based on the selected username
+  const filteredUsers = selectedUsername
+    ? username.filter((user) => user.username === selectedUsername)
+    : [];
+
   return (
     <div>
-      {username.map((val) => (
-        <Chats key={val.username} username={val.username} /> // Pass username as a prop
+      {filteredUsers.map((val) => (
+        <Chats key={val.username} username={val.username} />
       ))}
     </div>
   );
