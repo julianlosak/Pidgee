@@ -10,8 +10,10 @@ import {
   InMemoryCache,
   ApolloProvider,
   createHttpLink,
+  from,
 } from '@apollo/client';
 import { setContext } from '@apollo/client/link/context';
+import {onError} from '@apollo/client/link/error'
 
 const httpLink = createHttpLink({
   uri: '/graphql',
