@@ -16,10 +16,11 @@ const chatResolvers = {
       getAllChats: async (_, args, context) => {
           if(context.user) {
           try {
-              const userChats = await Chat.find({ users: context.user._id})
+            // { users: context.user._id}
+              const userChats = await Chat.find({})
               .populate({
               path: "users", 
-              select: "username",
+              select: "_id username",
           })
               .populate({
               path:"recentMessage",
@@ -42,10 +43,13 @@ const chatResolvers = {
       }
     },
 
-    getCurrentChatId: (_, args, context) => {
-    if(context.user) {
+    getCurrentChatId: async(_, args, context) => {
+    if(true) {
       try {
-      const currentChatId = getUserCurrentChatId(context.user.id) ;
+        const userChats = await Chat.find({ users: context.user._id})
+
+      const currentChatId = userChats[0]
+      // getUserCurrentChatId(context.user.id) ;
 
       return currentChatId;
 

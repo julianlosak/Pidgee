@@ -4,8 +4,8 @@ const messageResolvers = {
 Query: {
     chatMessages: async (parent, { chatId }, context) => {
        if(context.user) {
-        const userChatMessages = await Message.find({ chat: chatId });
-       
+        // { chatId: chatId }
+        const userChatMessages = await Message.find({  });
        return userChatMessages;
     }
  },
@@ -37,9 +37,12 @@ Query: {
 
 Mutation: {
   addMessage: async (parent, { content, chatId }, context) => { 
-    if(context.use) {
+    if(context.user) {
         try {
-            const newMessage = await Message.create({content});
+            const newMessage = await Message.create({
+                content: content,
+                chatId: chatId
+            });
             return newMessage;
         } catch (error) {
             console.error("Error posting new message:", error);

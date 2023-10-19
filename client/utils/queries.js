@@ -33,16 +33,26 @@ export const QUERY_USERNAME = gql `
 
 export const CHATS = gql `
 query getAllChats {
-  chat {
+  getAllChats {
+    _id
     chatName
     groupChat
-    content
     createdAt
     updatedAt
-    }
     users {
-      username
+      _id
     }
+    recentMessage {
+      content
+      createdAt
+      sender {
+        username
+      }
+    }
+    groupAdmin{
+      _id
+    }
+  }
 }
 
   `;

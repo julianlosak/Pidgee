@@ -13,9 +13,12 @@ const typeDefs = `
     }
 
     type Chat {
+        _id: ID
         chatName: String
         groupChat: Boolean
-        recentMessages(chatId: ID!): [Message]
+        createdAt: String
+        updatedAt: String
+        recentMessage: [Message]
         users: [User]
         groupAdmin: User
     }
@@ -57,7 +60,7 @@ const typeDefs = `
         addUser(username: String!, email: String!, password: String!): Auth
         addContact(userId: ID, contact: ID!): UserContacts
         login(email: String!, password: String!): Auth
-        addMessage(content: String!): Message
+        addMessage(content: String!, chatId: ID!): Message
         readMessages(chatId: ID!, userId: ID!): Boolean
     }
 `
