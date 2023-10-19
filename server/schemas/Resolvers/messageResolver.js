@@ -1,4 +1,4 @@
-const { User, Chat, Message } = require("../../models");
+const {  Message } = require("../../models");
 
 const messageResolvers = {
 Query: {
@@ -36,12 +36,31 @@ Query: {
     },
 
 Mutation: {
-  addMessage: async (parent, { content, chatId }, context) => {
+  addMessage: async (parent, { content, chatId }, context) => { 
+    if(context.use) {
+        try {
+            const newMessage = await Message.create({content});
+            return newMessage;
+        } catch (error) {
+            console.error("Error posting new message:", error);
+            throw new Error("Failed to post a new message. Please try again")
+        }
+    }
 
   }
 }
     
   };
+
+
+
+
+
+
+module.exports = messageResolvers
+
+    
+  
 
 
 

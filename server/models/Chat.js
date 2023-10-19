@@ -22,7 +22,7 @@ const chatSchema = new Schema({
         ref: "User"
     },
 },
- {timestamps: true}
+
 );
 
 const Chat = model("Chat", chatSchema);

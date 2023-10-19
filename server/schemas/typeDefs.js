@@ -18,8 +18,6 @@ const typeDefs = `
         recentMessages(chatId: ID!): [Message]
         users: [User]
         groupAdmin: User
-        createdAt: String
-        updatedAt: String
     }
 
     type Message {
@@ -41,7 +39,7 @@ const typeDefs = `
         getUser(username: String!): User
         getChat(chatId: ID!): Chat
         userChats(username: String!): [Chat]
-        GetAllChats: [Chat]
+        getAllChats: [Chat]
         getCurrentChatId: ID
         chatMessages(chatId: ID!): [Message]
         recentMessages(chatId: ID!, limit: Int!): [Message]
@@ -54,11 +52,12 @@ const typeDefs = `
     }
 
     type Mutation {
-        addChat(username: String!, email: String!): Chat
+        createChat(chatName: String!): Chat
+        updateChatName(chatId: ID!): Chat
         addUser(username: String!, email: String!, password: String!): Auth
         addContact(userId: ID, contact: ID!): UserContacts
         login(email: String!, password: String!): Auth
-        addMessage(Content: String!, chatId: ID!): Message
+        addMessage(content: String!): Message
         readMessages(chatId: ID!, userId: ID!): Boolean
     }
 `

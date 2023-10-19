@@ -41,18 +41,11 @@ mutation addContact($userId: ID!) {
 `;
 
 export const CREATE_CHAT = gql`
-mutation createChat($username: String!, $email: String!) {
-  createChat(username: $username, email: $email) {
+  mutation createChat($chatName: String!) {
+    createChat(chatName: $chatName) {
     chatName
-    groupChat
-    users {
-      username
-    }
-    groupAdmin {
-      username
-    }
   }
-}
+  }
 `;
 
 export const UPDATE_CHAT_NAME = gql`

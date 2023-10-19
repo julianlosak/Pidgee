@@ -1,4 +1,5 @@
 import React from "react";
+import Modal from 'react-bootstrap/Modal';
 import { useState, useEffect } from 'react';
 import Auth from '../../../utils/auth';
 import "./header.css";
@@ -10,8 +11,9 @@ import searchIcon from '../../assets/search.png';
 import { useLazyQuery } from '@apollo/client';
 import { useMutation } from '@apollo/client';
 import { ADD_CONTACT } from "../../../utils/mutations";
-import { Form, InputGroup, FormControl, Button, ListGroup } from 'react-bootstrap';
+import { Form, InputGroup, FormControl, Button, ListGroup, ModalHeader } from 'react-bootstrap';
 import { QUERY_USERNAME } from "../../../utils/queries";
+import { CREATE_CHAT } from "../../../utils/mutations";
 
  
 const Header = () => {
@@ -24,6 +26,18 @@ const Header = () => {
     const [username, setSearchUsername] = useState('');
     const [getUser, { loading, data }] = useLazyQuery(QUERY_USERNAME);
     const [contacts, setContacts] = useState([]);
+    const [createChat] = useMutation(CREATE_CHAT);
+    const [chatName, setChatName] =  useState('');
+    const [groupChat, setGroupChat] = useState('');
+    const [showChatModal, setShowChatModal] = useState(false);
+
+    const openChatModal = () => {
+      setShowChatModal(true);
+    };
+
+    const closeChatModal = () => {
+      setShowChatModal(false);
+    }
 
     useEffect(() => {
       if (data && data.user) {
@@ -45,6 +59,7 @@ const Header = () => {
     }
 
     const handleAddContacts = async (userId) => {
+      
       try {
         const { data } = await addContact({
           variables: { userId },
@@ -54,6 +69,24 @@ const Header = () => {
         console.error("Error adding contacts:", error);
       }
     }
+
+    const handleCreateChat = async () => {
+      if (chatName.trim() !== '')
+      try {
+
+        console.log("chatName:", chatName);
+
+        const { data } = await createChat({
+          variables: {
+          chatName: chatName,
+          }
+        });
+
+        console.log(`Chat created successfully: ${data.createChat.chatName}`);
+      } catch (error) {
+        console.error("Error creating chat:", error);
+      }
+    };
 
     return (
         <div>
@@ -71,6 +104,34 @@ const Header = () => {
               <button className="btn btn-md btn-light m-2" onClick={logout}>
                 Logout
               </button>
+              <button className="btn btn-md btn-light m-2" onClick={openChatModal}>
+                Create Chat
+              </button>
+              <Modal show={showChatModal} onHide={closeChatModal}>
+                <Modal.Header closeButton>
+                  <Modal.Title>Create a Chat</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
+                  <Form>
+                    <InputGroup className="mb-3">
+                      <FormControl
+                      type="text"
+                      placeholder="Chat Name"
+                      value={chatName}
+                      onChange={(e) => setChatName(e.target.value)}
+                      />
+                    </InputGroup>
+                  </Form>
+                </Modal.Body>
+                <Modal.Footer>
+                  <Button variant="secondary" onClick={closeChatModal}>
+                    Close
+                  </Button>
+                  <Button variant="primary" onClick={handleCreateChat}>
+                    Create Chat
+                    </Button>
+                </Modal.Footer>
+              </Modal>
             </>
           ) : (
             <>
