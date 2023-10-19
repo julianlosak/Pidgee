@@ -3,39 +3,49 @@ import React, { useEffect, useState } from 'react';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import { ADD_MESSAGE, DELETE_MESSAGE } from "../../utils/mutations";
-import { CHATID } from "../../utils/queries";
-import { useQuery } from '@apollo/client';
+import { CHATID, CHATS, CHAT } from "../../utils/queries";
+import { useLazyQuery, useQuery } from '@apollo/client';
 import { useMutation } from '@apollo/client';
 
 function SelectedChat() {
-  const [messages, setMessages] = useState([
-    {user_id: 1, text: 'Hello', sender: 'other' },
-    {user_id: 1, text: 'Hi there!', sender: 'you' },
-    {user_id: 2, text: 'How are you?', sender: 'other' },
-    {user_id: 3, text: 'Hello folks, how are you?', sender: 'other' },
-    {user_id: 4, text: 'Howdy?', sender: 'other' },
-  ]);
+  const [messages, setMessages] = useState([]);
 
   const [newMessage, setNewMessage] = useState('');
   const [addMessage] = useMutation(ADD_MESSAGE);
   const [deleteMessage] = useMutation(DELETE_MESSAGE);
   const { loading, error, data} = useQuery(CHATID);
-  const [contacts, setContact] = useState([{id: 1, name: "Adib" }, {id: 2, name: "Julian"}, {id: 3, name: "Ian"}, {id: 4, name: "Aaron"}])
-  const [selectedChat, setSelectedChat] = useState(contacts[0])
+  const { data: allchats} = useQuery(CHATS);
+  const [ChatMessages, { data: chatMessages}] = useLazyQuery(CHAT);
+  const [chats, setChats] = useState([])
+  const [selectedChat, setSelectedChat] = useState()
+
+  useEffect(() => {
+    if(allchats){
+      setChats(allchats.getAllChats)
+      setSelectedChat(allchats.getAllChats[0])
+    }
+  }, [allchats])
+
+  useEffect(() => {
+    if(selectedChat){
+      getAllMessages()
+    }
+  }, [selectedChat])
+
+  const getAllMessages = async () => {
+    try {
+      const {data: chat_msgs} = await ChatMessages({ variables:  { chatId:  selectedChat._id}});
+      setMessages(chat_msgs.chatMessages)
+    } catch (error) {
+      console.error("Error fetching user:", error);
+    }
+  }
 
   if (loading) return "Loading...";
   if (error) {
     console.error("Error loading chat ID", error);
     return "Error loading chat ID";
   }
-  // const sendMessage = () => {
-  //   if (newMessage.trim() !== '') {
-  //     setMessages([...messages, { text: newMessage, sender: 'you' }]);
-  //     setNewMessage('');
-  //   }
-  // };
-
-  const currentChatId = data.chatId;
 
 const sendMessage = async () => {
   if(newMessage.trim() !== '') {
@@ -43,9 +53,10 @@ const sendMessage = async () => {
       const { data } = await addMessage({
         variables: {
           content: newMessage,
-          chatId: currentChatId
+          chatId: selectedChat._id
         }
       });
+      getAllMessages()
     } catch (error) {
       console.error("error sending the message:", error);
     }
@@ -60,31 +71,33 @@ const selectedChatObj = (obj) => {
     <div>
       <Header></Header>
       <div className="selected-chat" style={{ paddingTop: 20 }}>
-        <div style={{ display: "flex", height: "50vh" }}>
+        <div style={{ display: "flex", height: "70vh" }}>
           <div style={{ flex: "2", borderRight: "1px solid" }}>
             <div className="chat-list-sidebar">
               <h2>Chat List</h2>
               <ul className="chat-list">
-                {contacts.map((chat) => (
-                  <li key={chat.id} className="chat-item" style={{ cursor: "pointer", listStyle: "none", borderBottom: "1px solid" }} onClick={() => selectedChatObj(chat)}>
-                    <div className="chat-item-name" style={{ padding: "10px 0px" }}>{chat.name}</div>
-                  </li>
-                ))}
+                {chats.map((chat) => {
+                  if(chat.chatName){
+                    return(<li key={chat._id} className="chat-item" style={{ cursor: "pointer", listStyle: "none", borderBottom: "1px solid" }} onClick={() => selectedChatObj(chat)}>
+                      <div className="chat-item-name" style={{ padding: "10px 0px" }}>{chat.chatName}</div>
+                    </li>)
+                  }
+                })}
               </ul>
             </div>
           </div>
           <div style={{ flex: "6", alignSelf: "end" }}>
-            <p>Selected: {selectedChat.name}</p>
+            <p>Selected: {selectedChat?.chatName}</p>
           <div className="chat-messages">
             {messages.map((message, index) => {
-              if (message.user_id == selectedChat.id){
+              // if (message.user_id == selectedChat?.id){
                   return <div
                     key={index}
                     className={`message ${message.sender === 'you' ? 'sent' : 'received'}`}
                   >
-                    {message.text}
+                    {message.content}
                   </div>
-              }
+              // }
              })
           }
           </div>
